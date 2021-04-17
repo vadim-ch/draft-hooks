@@ -1,0 +1,41 @@
+{
+  "name": "draft-hooks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "draft-js": ">=0.11.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "keywords": [
+    "draft",
+    "draftjs",
+    "draft-hooks",
+    "hooks",
+    "react-hooks",
+    "react",
+    "react-wysiwyg",
+    "draft-wysiwyg"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vadim-ch/draft-hooks.git"
+  },
+  "author": "Vadim Chistokhvalov <ivadik05@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vadim-ch/draft-hooks/issues"
+  },
+  "homepage": "https://github.com/vadim-ch/draft-hooks#readme",
+  "dependencies": {
+    "draft-js": "^0.11.7",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/draft-js": "^0.11.1"
+  }
+}
