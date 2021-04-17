@@ -15,12 +15,11 @@ import {
 } from '../utils';
 
 /**
- *
  * inlineList - при передаче этого параметраметра toggleStyle работает, как radio buttons
  * То есть при клике на контрол стили из inlineList будут удалены
  * И применится тот стиль на котором был клик
  */
-export const useInline = <T extends string>(
+export const useInline = <T extends string = string>(
   editorState: EditorState,
   setEditorState: (
     state: EditorState | ((prevState: EditorState) => EditorState),
@@ -33,11 +32,11 @@ export const useInline = <T extends string>(
         const removedStylesEditorState =
           inlineList && inlineList.length
             ? removeInlineStyles<T>(
-            inlineList.filter(
-              (inlineStyle) => inlineStyle !== toggledStyle,
-            ),
-            prevState,
-            )
+                inlineList.filter(
+                  (inlineStyle) => inlineStyle !== toggledStyle,
+                ),
+                prevState,
+              )
             : prevState;
         return toggledStyle && toggledStyle.length
           ? toggleInlineStyle(toggledStyle, removedStylesEditorState)
@@ -89,7 +88,7 @@ export const useEntity = <T, E extends string>(
 ): [
   (data: T, insertContent?: string) => void,
   () => void,
-    T | undefined,
+  T | undefined,
   boolean,
 ] => {
   const selectedEntityKey = useMemo((): string => {
@@ -207,11 +206,7 @@ export const useEntity = <T, E extends string>(
           prevState.getSelection(),
           null,
         );
-        return EditorState.push(
-          prevState,
-          newContentState,
-          'apply-entity',
-        );
+        return EditorState.push(prevState, newContentState, 'apply-entity');
       }
       return prevState;
     });

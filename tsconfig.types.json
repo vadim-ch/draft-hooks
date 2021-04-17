@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "declaration": true,
+    "isolatedModules": false,
+    "noEmit": false,
+    "allowJs": false,
+    "emitDeclarationOnly": true,
+    "rootDir": "./src"
+  },
+  "exclude": ["**/*.test.tsx", "**/*.stories.tsx"]
+}

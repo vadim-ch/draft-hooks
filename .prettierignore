@@ -1,0 +1,16 @@
+*.dtslint.ts
+*.woff
+*.woff2
+dist/
+dist-es/
+storybook-static/
+node_modules/
+.docker
+.gitlab
+.helm
+package.json
+package-lock.json
+yarn.lock
+.cache
+.docz
+CHANGELOG.md

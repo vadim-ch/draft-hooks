@@ -34,11 +34,7 @@ export const removeInlineStyles = <T extends string>(
     },
     editorState.getCurrentContent(),
   );
-  return EditorState.push(
-    editorState,
-    nextContentState,
-    'change-inline-style',
-  );
+  return EditorState.push(editorState, nextContentState, 'change-inline-style');
 };
 
 export const findEntities = <T extends string>(entityType: T) => (
@@ -92,8 +88,8 @@ export const getExistEntityByType = (
   // isSelectionContainOnlyEntity(editorState)
 
   return selectedEntityKey &&
-  contentState.getEntity(selectedEntityKey).getType() === entityType &&
-  !selection.isCollapsed()
+    contentState.getEntity(selectedEntityKey).getType() === entityType &&
+    !selection.isCollapsed()
     ? contentState.getEntity(selectedEntityKey)
     : undefined;
 };
