@@ -1,6 +1,9 @@
 import {
+  DraftBlockType,
   DraftEntityMutability,
+  DraftEntityType,
   DraftInlineStyle,
+  DraftInlineStyleType,
   EditorState,
   EntityInstance,
   Modifier,
@@ -15,11 +18,12 @@ import {
 } from '../utils';
 
 /**
- * inlineList - при передаче этого параметраметра toggleStyle работает, как radio buttons
- * То есть при клике на контрол стили из inlineList будут удалены
- * И применится тот стиль на котором был клик
+ * Hook for toggle inline style - https://draftjs.org/docs/quickstart-rich-styling/#styling-controls-in-ui
+ * To add styles to the editor itself - https://draftjs.org/docs/advanced-topics-inline-styles/#mapping-a-style-string-to-css
+ * The InlineList parameter is a list of inline styles to remove these styles when the handler is called
+ * Returns a memoized handler for a style switch and current(selected) inline style
  */
-export const useInline = <T extends string = string>(
+export const useInline = <T extends string = DraftInlineStyleType>(
   editorState: EditorState,
   setEditorState: (
     state: EditorState | ((prevState: EditorState) => EditorState),
@@ -49,15 +53,23 @@ export const useInline = <T extends string = string>(
   const currentStyle = useMemo(() => editorState.getCurrentInlineStyle(), [
     editorState,
   ]);
+
   return [toggleStyle, currentStyle];
 };
 
-export const useBlock = <T extends string>(
+/**
+ * Hook for toggle content block - https://draftjs.org/docs/api-reference-content-block/
+ * To add styles to the editor itself - https://draftjs.org/docs/advanced-topics-block-styling/#blockstylefn
+ * Returns a memoized handler for a content block switch and current(selected) content block type
+ */
+export const useBlock = <T extends string = DraftBlockType>(
   editorState: EditorState,
   setEditorState: (
     state: EditorState | ((prevState: EditorState) => EditorState),
   ) => void,
 ): [(blockStyle: T) => void, T] => {
+  const selection = editorState.getSelection();
+
   const handleChange = useCallback(
     (blockStyle: T) => {
       setEditorState((prevState) =>
@@ -66,7 +78,7 @@ export const useBlock = <T extends string>(
     },
     [setEditorState],
   );
-  const selection = editorState.getSelection();
+
   const blockType = useMemo(
     () =>
       editorState
@@ -75,10 +87,14 @@ export const useBlock = <T extends string>(
         .getType(),
     [editorState, selection],
   );
+
   return [handleChange, blockType as T];
 };
 
-export const useEntity = <T, E extends string>(
+export const useEntity = <
+  T extends Record<string, unknown> = Record<string, unknown>,
+  E extends DraftEntityType = DraftEntityType
+>(
   editorState: EditorState,
   setEditorState: (
     state: EditorState | ((prevState: EditorState) => EditorState),
@@ -111,8 +127,6 @@ export const useEntity = <T, E extends string>(
   const addEntity = useCallback(
     (data: T, insertContent?: string) => {
       setEditorState((prevState) => {
-        // TODO Можно сделать forceSelection над entity
-        //  чтобы без выделения просто находясь на entity можно было редактировать
         const contentState = prevState.getCurrentContent();
         const selection = prevState.getSelection();
         const contentStateWithEntity = contentState.createEntity(
@@ -124,9 +138,8 @@ export const useEntity = <T, E extends string>(
         const createdEntityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
         let newEditorState;
-        // если выделен какой-то текст
+
         if (!selection.isCollapsed()) {
-          // применение entity к тексту
           const contentStateWithAppliedEntity = Modifier.applyEntity(
             contentStateWithEntity,
             prevState.getSelection(),
@@ -138,7 +151,6 @@ export const useEntity = <T, E extends string>(
             'apply-entity',
           );
         } else {
-          // вставка entity после курсора
           newEditorState = prevState;
           if (typeof insertContent === 'string') {
             const newContentState = Modifier.insertText(
