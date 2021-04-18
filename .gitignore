@@ -2,7 +2,6 @@ coverage/
 dist/
 dist-es/
 dist-dev/
-node_modules/
 npm-debug.log
 .idea/
 .serverless
