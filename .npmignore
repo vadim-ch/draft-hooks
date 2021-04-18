@@ -1,0 +1,16 @@
+.DS_Store
+
+/.docker
+
+/node_modules
+/coverage
+
+/src
+.eslintignore
+.eslintrc.js
+.gitignore
+.prettierignore
+.prettierrc
+babel.config.js
+tsconfig.json
+tsconfig.types.json
