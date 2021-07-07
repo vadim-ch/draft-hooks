@@ -7,7 +7,7 @@ cache:
     - "node_modules"
 
 install:
-  - yarn clean && yarn build && yarn build:types
+  - yarn
 
 script:
-  - yarn build
+  - yarn clean && yarn build && yarn build:types
